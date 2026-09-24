@@ -80,6 +80,20 @@
   function count() { return state.basket.reduce(function (a, l) { return a + l.qty; }, 0); }
   function total() { return state.basket.reduce(function (a, l) { return a + l.qty * l.price; }, 0); }
 
+  // Screen reader announcement for changes that have no visible message of their own
+  var srTimer;
+  function announce(msg) {
+    var el = $('#sr-status');
+    if (!el) return;
+    el.textContent = '';
+    clearTimeout(srTimer);
+    srTimer = setTimeout(function () { el.textContent = msg; }, 50);
+  }
+  function summary() {
+    var n = count();
+    return 'Your order: ' + n + (n === 1 ? ' item, ' : ' items, ') + gbp(total()) + '.';
+  }
+
   function bump() {
     var pill = $('#order-pill');
     pill.classList.remove('bump');
@@ -124,15 +138,20 @@
           ? '<span class="drink-qty"><button type="button" data-drink-dec aria-label="Remove one ' + name + '">−</button><span>' + qty + '</span><button type="button" data-drink-inc aria-label="Add one more ' + name + '">+</button></span>'
           : '<button type="button" class="drink-add" data-drink-inc aria-label="Add ' + name + '">Add</button>';
         if (ctl.getAttribute('data-q') !== String(qty)) {
-          var hadFocus = ctl.contains(document.activeElement) && document.activeElement.hasAttribute('data-drink-inc');
+          // The buttons are rebuilt, so put focus back on the same one (or on "Add" if it went back to 0)
+          var active = ctl.contains(document.activeElement) ? document.activeElement : null;
+          var which = active && active.hasAttribute('data-drink-dec') ? '[data-drink-dec]' : '[data-drink-inc]';
           ctl.innerHTML = html;
           ctl.setAttribute('data-q', String(qty));
-          if (hadFocus) { var f = $('[data-drink-inc]', ctl); if (f) f.focus(); }
+          if (active) { var f = $(which, ctl) || $('[data-drink-inc]', ctl); if (f) f.focus(); }
         }
       });
     });
 
     var list = $('#basket-lines');
+    var focused = list.contains(document.activeElement) ? document.activeElement : null;
+    var focusKey = focused && focused.closest('[data-key]').getAttribute('data-key');
+    var focusAttr = focused && (focused.hasAttribute('data-line-inc') ? '[data-line-inc]' : '[data-line-dec]');
     list.innerHTML = '';
     state.basket.forEach(function (l) {
       var li = document.createElement('li');
@@ -151,7 +170,10 @@
       $('[data-line-inc]', li).setAttribute('aria-label', 'Add one more ' + l.name);
       li.setAttribute('data-key', l.key);
       list.appendChild(li);
+      if (focusKey === l.key) { $(focusAttr, li).focus(); focusKey = null; }
     });
+    // The line that had focus was removed: move focus to the basket heading instead of losing it
+    if (focusKey && state.step === 'basket') $('#basket-title').focus();
 
     $('#basket-empty').hidden = n > 0;
     $('#checkout-btn').disabled = n === 0;
@@ -277,8 +299,10 @@
         if (e.target.closest('[data-drink-inc]')) {
           addLine({ key: prefix + '|' + id, name: d.name, detail: d.sub, price: d.price, qty: 1 });
           if (state.step === 'done') { state.step = 'basket'; render(); }
+          announce('Added ' + d.name + '. ' + summary());
         } else if (e.target.closest('[data-drink-dec]')) {
           change(prefix + '|' + id, -1);
+          announce('Removed one ' + d.name + '. ' + summary());
         }
       });
     });
@@ -287,8 +311,10 @@
   $('#basket-lines').addEventListener('click', function (e) {
     var li = e.target.closest('[data-key]');
     if (!li) return;
-    if (e.target.closest('[data-line-inc]')) change(li.getAttribute('data-key'), 1);
-    else if (e.target.closest('[data-line-dec]')) change(li.getAttribute('data-key'), -1);
+    var key = li.getAttribute('data-key');
+    var name = $('.name', li).textContent;
+    if (e.target.closest('[data-line-inc]')) { change(key, 1); announce('Added one ' + name + '. ' + summary()); }
+    else if (e.target.closest('[data-line-dec]')) { change(key, -1); announce('Removed one ' + name + '. ' + summary()); }
   });
 
   $('#checkout-btn').addEventListener('click', function () {
@@ -299,7 +325,14 @@
     var first = $('#panel-checkout input');
     if (first) first.focus();
   });
-  $('#back-btn').addEventListener('click', function () { state.step = 'basket'; render(); });
+  $('#back-btn').addEventListener('click', function () { state.step = 'basket'; render(); $('#checkout-btn').focus(); });
+
+  // Friendlier message than the browser default for a phone number that doesn't look right
+  var phone = $('#f-phone');
+  phone.addEventListener('input', function () { phone.setCustomValidity(''); });
+  phone.addEventListener('invalid', function () {
+    if (phone.validity.patternMismatch || phone.validity.tooShort) phone.setCustomValidity('Please enter a phone number we can call, like 07700 900123.');
+  });
 
   $('#panel-checkout').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -326,9 +359,10 @@
     state.step = 'done';
     save([]);
     $('#basket').scrollIntoView({ block: 'start' });
+    $('#done-title').focus({ preventScroll: true });
   }
 
-  $('#new-order-btn').addEventListener('click', function () { state.step = 'basket'; render(); });
+  $('#new-order-btn').addEventListener('click', function () { state.step = 'basket'; render(); $('#basket-title').focus(); });
 
   window.addEventListener('resize', render);
   // Keep the basket in sync if it changes in another tab
