@@ -28,6 +28,9 @@ This replaces the original Claude Design export. The export was a JavaScript bun
   `assets/menu.js` (`MEATS`, `FOODS` and `DRINKS`), and in the JSON-LD blocks at the top of each page (Google reads those).
 - **Photos**: put new images in `assets/img/`. Keep them under about 1100px wide. If you replace a `.jpg`, replace
   or delete its `.webp` twin as well. Browsers prefer the `.webp` when one exists.
+- **CSS and JS caching**: browsers check `assets/*.css` and `assets/*.js` for changes on every visit, so edits show
+  up straight away. The `?v=2` on those links in the HTML is there to push past copies cached under the old
+  7-day rule. Bump it if you ever need to force a refresh.
 
 ## Preview locally
 
