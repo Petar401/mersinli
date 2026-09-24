@@ -7,19 +7,36 @@
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#D62718">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/assets/site.css?v=2">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preload" href="/assets/fonts/dm-serif-display-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/figtree-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site.css?v=3">
+<script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
+
 <header class="site-header">
   <nav class="wrap" aria-label="Main">
     <a class="brand" href="/">
-      <picture><source srcset="/assets/img/logo-choban-96.webp" type="image/webp"><img src="/assets/img/logo-choban-96.jpg" alt="Mersinli Tantuni by Choban logo" width="44" height="44"></picture>
-      <span class="brand-text"><span class="brand-name">Mersinli Tantuni</span><span class="brand-sub">by Choban, Norwich</span></span>
+      <picture><source srcset="/assets/img/logo-choban-96.webp" type="image/webp"><img src="/assets/img/logo-choban-96.jpg" alt="Mersinli Tantuni by Choban, home" width="44" height="44"></picture>
+      <span class="brand-text" aria-hidden="true"><span class="brand-name">Mersinli Tantuni</span><span class="brand-sub">by Choban, Norwich</span></span>
     </a>
-    <div class="nav-links"><a class="btn btn-red" href="/menu">Order now</a></div>
+    <div class="nav-links" id="site-menu">
+      <a href="/#what-is-tantuni">What is tantuni?</a>
+      <a href="/menu">Menu</a>
+      <a href="/menu#allergens">Allergens</a>
+      <a href="/#faq">FAQ</a>
+      <a href="/#visit">Find us</a>
+    </div>
+    <div class="nav-actions">
+      <a class="btn btn-red" href="/menu">Order<span class="nav-long"> now</span></a>
+      <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-menu" aria-label="Menu"><span class="nav-toggle-bars" aria-hidden="true"></span></button>
+    </div>
   </nav>
 </header>
-<main class="wrap section" style="min-height:60vh;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:20px">
+
+<main id="main" class="wrap section" style="min-height:60vh;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:20px">
   <p class="eyebrow">Error 404</p>
   <h1 class="h2">This page has gone off the pan.</h1>
   <p class="lead">We couldn't find what you were looking for. The tantuni is still here though.</p>
@@ -28,9 +45,31 @@
     <a class="btn btn-outline btn-lg" href="/">Back to the homepage</a>
   </div>
 </main>
+
 <footer class="site-footer">
   <div class="stripe-dark" aria-hidden="true"></div>
-  <div class="wrap inner"><span>Mersinli Tantuni by Choban, 1 Exeter Street, Norwich NR2 4QB</span><span>Sun to Thu 10am to 10pm, Fri and Sat 10am to 11pm</span></div>
+  <div class="wrap inner">
+    <div class="col">
+      <span class="name">Mersinli Tantuni by Choban</span>
+      <span>Halal Mersin tantuni in the middle of Norwich</span>
+    </div>
+    <div class="col">
+      <span>1 Exeter Street, Norwich NR2 4QB</span>
+      <span>Sun to Thu 10am to 10pm, Fri and Sat 10am to 11pm</span>
+    </div>
+    <nav class="links" aria-label="Footer">
+      <ul>
+        <li><a href="/menu">Menu and ordering</a></li>
+        <li><a href="/menu#allergens">Allergens</a></li>
+        <li><a href="/#faq">Questions</a></li>
+        <li><a href="/#visit">Find us</a></li>
+        <li><a href="/privacy">Privacy and cookies</a></li>
+        <li><button type="button" class="footer-btn" data-cookie-settings>Cookie settings</button></li>
+      </ul>
+    </nav>
+  </div>
 </footer>
+
+<script src="/assets/site.js?v=3" defer></script>
 </body>
 </html>
