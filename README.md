@@ -11,7 +11,7 @@ menu.html           Menu and online ordering (served at /menu)
 assets/
   site.css          Shared styles (colours are CSS variables at the top)
   menu.css          Styles for the menu page only
-  menu.js           Menu page logic: meat picker, drinks, basket, checkout
+  menu.js           Menu page logic: meat picker, gözleme, drinks, basket, checkout
   fonts/            DM Serif Display and Figtree, self-hosted
   img/              Photos (.jpg plus a smaller .webp of each)
   favicon.svg, apple-touch-icon.png
@@ -25,7 +25,7 @@ This replaces the original Claude Design export. The export was a JavaScript bun
 ## Editing
 
 - **Text, prices, opening hours**: edit `index.html` and `menu.html` directly. Menu prices also live in
-  `assets/menu.js` (`MEATS` and `DRINKS`), and in the JSON-LD blocks at the top of each page (Google reads those).
+  `assets/menu.js` (`MEATS`, `FOODS` and `DRINKS`), and in the JSON-LD blocks at the top of each page (Google reads those).
 - **Photos**: put new images in `assets/img/`. Keep them under about 1100px wide. If you replace a `.jpg`, replace
   or delete its `.webp` twin as well. Browsers prefer the `.webp` when one exists.
 

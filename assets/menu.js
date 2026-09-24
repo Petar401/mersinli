@@ -1,4 +1,4 @@
-// Menu page: build a tantuni, add gözleme and drinks, keep a basket in localStorage, demo checkout.
+// Menu page: build a tantuni, order gözleme on its own, add drinks, keep a basket in localStorage, demo checkout.
 (function () {
   'use strict';
 
@@ -22,7 +22,7 @@
     water: { name: 'Hayat Water', sub: 'Still mineral water, 500ml', price: 1.5, img: '/assets/img/hayat-water.jpg' }
   };
   // Items sold as a single card with an Add button: [card attribute, catalogue, basket key prefix]
-  var CARDS = [['data-food', FOODS, 'food'], ['data-drink', DRINKS, 'drink']];
+  var CARDS = [['data-drink', DRINKS, 'drink']];
   var CATALOGUES = { food: FOODS, drink: DRINKS };
   var ASAP = "As soon as it's ready (about 15 minutes)";
   var STORE_KEY = 'mt_basket';
@@ -37,6 +37,7 @@
     format: 'durum',
     spice: 'Medium',
     qty: 1,
+    gqty: 1,
     basket: loadBasket(),
     step: 'basket'
   };
@@ -105,6 +106,11 @@
     $('#qty').textContent = state.qty;
     $('#add-label').textContent = 'Add ' + state.qty + ' ' + meat.name.toLowerCase() + ' ' + fmt.name.toLowerCase() + (state.qty > 1 ? 's' : '') + ' to your order';
     $('#add-total').textContent = gbp(unit * state.qty);
+
+    var gz = FOODS.gozleme;
+    $('#gqty').textContent = state.gqty;
+    $('#gozleme-label').textContent = 'Add ' + state.gqty + ' ' + gz.name.toLowerCase() + (state.gqty > 1 ? 's' : '') + ' to your order';
+    $('#gozleme-total').textContent = gbp(gz.price * state.gqty);
 
     CARDS.forEach(function (c) {
       var attr = c[0], items = c[1], prefix = c[2];
@@ -181,11 +187,12 @@
 
   // ---------- Events ----------
   var flashTimer;
-  function flash(msg) {
-    var el = $('#flash');
-    el.textContent = msg;
+  function flash(msg, el) {
+    var clear = function () { $$('.flash').forEach(function (f) { f.textContent = ''; }); };
+    clear();
+    (el || $('#flash')).textContent = msg;
     clearTimeout(flashTimer);
-    flashTimer = setTimeout(function () { el.textContent = ''; }, 2600);
+    flashTimer = setTimeout(clear, 2600);
   }
 
   // Arrow-key navigation inside a radiogroup
@@ -244,6 +251,22 @@
     if (state.step === 'done') state.step = 'basket';
     render();
     flash('Added. Want a drink with that?');
+  });
+
+  $$('[data-gqty]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      state.gqty = Math.min(20, Math.max(1, state.gqty + Number(b.getAttribute('data-gqty'))));
+      render();
+    });
+  });
+
+  $('#gozleme-add').addEventListener('click', function () {
+    var gz = FOODS.gozleme;
+    addLine({ key: 'food|gozleme', name: gz.name, detail: gz.sub, price: gz.price, qty: state.gqty });
+    state.gqty = 1;
+    if (state.step === 'done') state.step = 'basket';
+    render();
+    flash('Added. Want a drink with that?', $('#gozleme-flash'));
   });
 
   CARDS.forEach(function (c) {

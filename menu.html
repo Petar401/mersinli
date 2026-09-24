@@ -34,6 +34,7 @@
     </a>
     <div class="nav-links">
       <a href="/#what-is-tantuni">About tantuni</a>
+      <a href="#tantuni">Tantuni</a>
       <a href="#gozleme">Gözleme</a>
       <a href="#drinks">Drinks</a>
       <a class="order-pill" id="order-pill" href="#basket"><span class="pill-long">Your order</span><span class="pill-short" aria-hidden="true">Order</span> <span class="count" data-count>0</span></a>
@@ -46,11 +47,11 @@
 <div class="menu-main">
   <div class="menu-intro">
     <p class="eyebrow">Order online, pick up from 1 Exeter Street</p>
-    <h1>Build your tantuni</h1>
-    <p class="lead">We cook every tantuni when you order it and roll it in lavash with tomato, sumac onions and parsley. You get lemon and pickled peppers on the side. Every tantuni is £6.50.</p>
+    <h1>Order tantuni or gözleme</h1>
+    <p class="lead">Build a tantuni, order a gözleme on its own, or have both. We cook everything when you order it. Every tantuni is £6.50 and every gözleme is £4.50.</p>
   </div>
 
-  <section class="step" aria-labelledby="step-meat">
+  <section id="tantuni" class="step" aria-labelledby="step-meat">
     <div class="step-head">
       <h2 id="step-meat"><span class="n">1.</span>Choose your meat</h2>
       <div class="arrows">
@@ -118,20 +119,34 @@
 
   <section id="gozleme" class="step" aria-labelledby="step-gozleme">
     <div>
-      <h2 id="step-gozleme"><span class="n">3.</span>Add a gözleme</h2>
-      <p class="step-note">Thin dough folded around feta cheese, cheese and parsley, cooked on the sac until it's crisp. Every gözleme is £4.50.</p>
+      <h2 id="step-gozleme">Gözleme</h2>
+      <p class="step-note">Order it on its own or alongside a tantuni. Every gözleme is £4.50.</p>
     </div>
-    <div class="drinks">
-      <article class="drink" data-food="gozleme">
-        <picture><source srcset="/assets/img/gozleme.webp" type="image/webp"><img src="/assets/img/gozleme.jpg" alt="Gözleme cut into four, with tomato and cucumber" width="1100" height="1100" loading="lazy" decoding="async"></picture>
-        <div class="body"><div class="info"><h3>Gözleme</h3><span class="sub">Feta cheese, cheese, parsley</span></div><div class="foot"><span class="price">£4.50</span><span class="ctl"></span></div></div>
-      </article>
-    </div>
+    <article class="food-card">
+      <picture><source srcset="/assets/img/gozleme.webp" type="image/webp"><img src="/assets/img/gozleme.jpg" alt="Gözleme cut into four, with tomato and cucumber" width="1100" height="1100" loading="lazy" decoding="async"></picture>
+      <div class="body">
+        <span class="tr">Peynirli</span>
+        <div class="row"><h3>Gözleme</h3><span class="price">£4.50</span></div>
+        <p class="desc">Thin dough folded around feta cheese, cheese and parsley, cooked on the sac until it's crisp.</p>
+        <div class="opt-group">
+          <span class="opt-label" id="gqty-label">Quantity</span>
+          <div class="stepper" role="group" aria-labelledby="gqty-label">
+            <button type="button" aria-label="Decrease gözleme quantity" data-gqty="-1">−</button>
+            <output id="gqty" aria-live="polite">1</output>
+            <button type="button" aria-label="Increase gözleme quantity" data-gqty="1">+</button>
+          </div>
+        </div>
+        <button type="button" class="add-btn" id="gozleme-add">
+          <span id="gozleme-label">Add 1 gözleme to your order</span><span id="gozleme-total">£4.50</span>
+        </button>
+        <p class="flash" id="gozleme-flash" role="status"></p>
+      </div>
+    </article>
   </section>
 
   <section id="drinks" class="step" aria-labelledby="step-drinks">
     <div>
-      <h2 id="step-drinks"><span class="n">4.</span>Add a drink</h2>
+      <h2 id="step-drinks">Drinks</h2>
       <p class="step-note">In Mersin they drink it with şalgam. Every drink is £1.50.</p>
     </div>
     <div class="drinks">
@@ -169,7 +184,7 @@
 
     <div class="panel" id="panel-basket">
       <h2 id="basket-title">Your order</h2>
-      <p class="empty" id="basket-empty">Your order is empty.<br>Pick a meat to get started.</p>
+      <p class="empty" id="basket-empty">Your order is empty.<br>Pick a tantuni or a gözleme to get started.</p>
       <ul class="lines" id="basket-lines"></ul>
       <div class="kv muted"><span>Collection from</span><span>1 Exeter Street</span></div>
       <div class="kv"><span class="label">Total</span><span class="big" data-total>£0.00</span></div>
