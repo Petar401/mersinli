@@ -1,16 +1,17 @@
-// Menu page: build a tantuni, add drinks, keep a basket in localStorage, demo checkout.
+// Menu page: build a tantuni, add gözleme and drinks, keep a basket in localStorage, demo checkout.
 (function () {
   'use strict';
 
   var MEATS = {
-    beef: { name: 'Beef', price: 6.5, img: '/assets/img/tantuni-plate-marble.jpg' },
-    lamb: { name: 'Lamb', price: 6.5, img: '/assets/img/tantuni-wraps-cut.jpg' },
     chicken: { name: 'Chicken', price: 6.5, img: '/assets/img/tantuni-plate-white.jpg' },
     mix: { name: 'Beef and lamb', price: 6.5, img: '/assets/img/tantuni-wraps-cut.jpg' }
   };
   var FORMATS = {
     durum: { name: 'Dürüm wrap', add: 0 },
     plate: { name: 'Tantuni plate', add: 0 }
+  };
+  var FOODS = {
+    gozleme: { name: 'Gözleme', sub: 'Feta cheese, cheese, parsley', price: 4.5, img: '/assets/img/gozleme.jpg' }
   };
   var DRINKS = {
     salgam: { name: 'Şalgam', sub: 'Turnib, spicy, 500ml', price: 1.5, img: '/assets/img/salgam.jpg' },
@@ -20,6 +21,9 @@
     'fanta-l': { name: 'Fanta Lemon', sub: '330ml can', price: 1.5, img: '/assets/img/fanta-lemon.jpg' },
     water: { name: 'Hayat Water', sub: 'Still mineral water, 500ml', price: 1.5, img: '/assets/img/hayat-water.jpg' }
   };
+  // Items sold as a single card with an Add button: [card attribute, catalogue, basket key prefix]
+  var CARDS = [['data-food', FOODS, 'food'], ['data-drink', DRINKS, 'drink']];
+  var CATALOGUES = { food: FOODS, drink: DRINKS };
   var ASAP = "As soon as it's ready (about 15 minutes)";
   var STORE_KEY = 'mt_basket';
 
@@ -29,7 +33,7 @@
 
   var q = new URLSearchParams(location.search).get('meat');
   var state = {
-    meat: MEATS[q] ? q : 'beef',
+    meat: MEATS[q] ? q : 'chicken',
     format: 'durum',
     spice: 'Medium',
     qty: 1,
@@ -39,15 +43,20 @@
 
   // Image paths are looked up from the item key rather than trusted from storage,
   // so baskets saved by older versions of the site still show the right picture.
-  function imgFor(key) {
+  function itemFor(key) {
     var parts = key.split('|');
-    if (parts[0] === 'drink') return DRINKS[parts[1]] ? DRINKS[parts[1]].img : '';
-    return MEATS[parts[0]] ? MEATS[parts[0]].img : '';
+    var cat = CATALOGUES[parts[0]];
+    return cat ? cat[parts[1]] : MEATS[parts[0]];
+  }
+  function imgFor(key) {
+    var item = itemFor(key);
+    return item ? item.img : '';
   }
   function loadBasket() {
     try {
       var b = JSON.parse(localStorage.getItem(STORE_KEY) || '[]');
-      return Array.isArray(b) ? b.filter(function (l) { return l && l.key && l.qty > 0 && typeof l.price === 'number'; }) : [];
+      // Drop lines for items that are no longer on the menu (e.g. beef or lamb tantuni).
+      return Array.isArray(b) ? b.filter(function (l) { return l && typeof l.key === 'string' && itemFor(l.key) && l.qty > 0 && typeof l.price === 'number'; }) : [];
     } catch (e) { return []; }
   }
   function save(basket) {
@@ -97,21 +106,24 @@
     $('#add-label').textContent = 'Add ' + state.qty + ' ' + meat.name.toLowerCase() + ' ' + fmt.name.toLowerCase() + (state.qty > 1 ? 's' : '') + ' to your order';
     $('#add-total').textContent = gbp(unit * state.qty);
 
-    $$('[data-drink]').forEach(function (card) {
-      var id = card.getAttribute('data-drink');
-      var line = state.basket.find(function (l) { return l.key === 'drink|' + id; });
-      var qty = line ? line.qty : 0;
-      var ctl = $('.ctl', card);
-      var name = DRINKS[id].name;
-      var html = qty > 0
-        ? '<span class="drink-qty"><button type="button" data-drink-dec aria-label="Remove one ' + name + '">−</button><span>' + qty + '</span><button type="button" data-drink-inc aria-label="Add one more ' + name + '">+</button></span>'
-        : '<button type="button" class="drink-add" data-drink-inc aria-label="Add ' + name + '">Add</button>';
-      if (ctl.getAttribute('data-q') !== String(qty)) {
-        var hadFocus = ctl.contains(document.activeElement) && document.activeElement.hasAttribute('data-drink-inc');
-        ctl.innerHTML = html;
-        ctl.setAttribute('data-q', String(qty));
-        if (hadFocus) { var f = $('[data-drink-inc]', ctl); if (f) f.focus(); }
-      }
+    CARDS.forEach(function (c) {
+      var attr = c[0], items = c[1], prefix = c[2];
+      $$('[' + attr + ']').forEach(function (card) {
+        var id = card.getAttribute(attr);
+        var line = state.basket.find(function (l) { return l.key === prefix + '|' + id; });
+        var qty = line ? line.qty : 0;
+        var ctl = $('.ctl', card);
+        var name = items[id].name;
+        var html = qty > 0
+          ? '<span class="drink-qty"><button type="button" data-drink-dec aria-label="Remove one ' + name + '">−</button><span>' + qty + '</span><button type="button" data-drink-inc aria-label="Add one more ' + name + '">+</button></span>'
+          : '<button type="button" class="drink-add" data-drink-inc aria-label="Add ' + name + '">Add</button>';
+        if (ctl.getAttribute('data-q') !== String(qty)) {
+          var hadFocus = ctl.contains(document.activeElement) && document.activeElement.hasAttribute('data-drink-inc');
+          ctl.innerHTML = html;
+          ctl.setAttribute('data-q', String(qty));
+          if (hadFocus) { var f = $('[data-drink-inc]', ctl); if (f) f.focus(); }
+        }
+      });
     });
 
     var list = $('#basket-lines');
@@ -234,16 +246,19 @@
     flash('Added. Want a drink with that?');
   });
 
-  $('.drinks').addEventListener('click', function (e) {
-    var card = e.target.closest('[data-drink]');
-    if (!card) return;
-    var id = card.getAttribute('data-drink'), d = DRINKS[id];
-    if (e.target.closest('[data-drink-inc]')) {
-      addLine({ key: 'drink|' + id, name: d.name, detail: d.sub, price: d.price, qty: 1 });
-      if (state.step === 'done') { state.step = 'basket'; render(); }
-    } else if (e.target.closest('[data-drink-dec]')) {
-      change('drink|' + id, -1);
-    }
+  CARDS.forEach(function (c) {
+    var attr = c[0], items = c[1], prefix = c[2];
+    $$('[' + attr + ']').forEach(function (card) {
+      var id = card.getAttribute(attr), d = items[id];
+      card.addEventListener('click', function (e) {
+        if (e.target.closest('[data-drink-inc]')) {
+          addLine({ key: prefix + '|' + id, name: d.name, detail: d.sub, price: d.price, qty: 1 });
+          if (state.step === 'done') { state.step = 'basket'; render(); }
+        } else if (e.target.closest('[data-drink-dec]')) {
+          change(prefix + '|' + id, -1);
+        }
+      });
+    });
   });
 
   $('#basket-lines').addEventListener('click', function (e) {
