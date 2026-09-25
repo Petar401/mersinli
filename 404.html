@@ -10,12 +10,13 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="preload" href="/assets/fonts/dm-serif-display-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/figtree-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site.css?v=3">
+<link rel="stylesheet" href="/assets/site.css?v=4">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
+<!-- @partial header -->
 <header class="site-header">
   <nav class="wrap" aria-label="Main">
     <a class="brand" href="/">
@@ -23,41 +24,67 @@
       <span class="brand-text" aria-hidden="true"><span class="brand-name">Mersinli Tantuni</span><span class="brand-sub">by Choban, Norwich</span></span>
     </a>
     <div class="nav-links" id="site-menu">
-      <a href="/#what-is-tantuni">What is tantuni?</a>
       <a href="/menu">Menu</a>
-      <a href="/menu#allergens">Allergens</a>
-      <a href="/#faq">FAQ</a>
+      <a href="/what-is-tantuni">What is tantuni?</a>
+      <a href="/gozleme">Gözleme</a>
+      <a href="/turkish-drinks">Drinks</a>
+      <a href="/about">Our story</a>
       <a href="/#visit">Find us</a>
+      <a class="nav-mobile nav-lang" href="/tr" hreflang="tr" lang="tr">Türkçe</a>
+      <div class="nav-extra">
+        <span class="label">Opening hours</span>
+        <span>Sunday to Thursday, 10am to 10pm</span>
+        <span>Friday and Saturday, 10am to 11pm</span>
+        <span class="open-now" data-open-now data-pending></span>
+      </div>
     </div>
     <div class="nav-actions">
+      <a class="lang-switch" href="/tr" hreflang="tr" lang="tr"><span aria-hidden="true">TR</span><span class="sr-only">Türkçe</span></a>
       <a class="btn btn-red" href="/menu">Order<span class="nav-long"> now</span></a>
       <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-menu" aria-label="Menu"><span class="nav-toggle-bars" aria-hidden="true"></span></button>
     </div>
   </nav>
 </header>
+<!-- /@partial -->
 
 <main id="main" class="wrap section" style="min-height:60vh;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:20px">
   <p class="eyebrow">Error 404</p>
   <h1 class="h2">This page has gone off the pan.</h1>
   <p class="lead">We couldn't find what you were looking for. The tantuni is still here though.</p>
+  <p lang="tr" class="lead" style="font-size:1rem">Aradığınız sayfayı bulamadık. <a href="/tr">Türkçe ana sayfaya dönün</a>.</p>
   <div class="btn-row">
     <a class="btn btn-red btn-lg" href="/menu">See the menu</a>
     <a class="btn btn-outline btn-lg" href="/">Back to the homepage</a>
   </div>
 </main>
 
+<!-- @partial footer -->
 <footer class="site-footer">
   <div class="stripe-dark" aria-hidden="true"></div>
   <div class="wrap inner">
     <div class="col">
       <span class="name">Mersinli Tantuni by Choban</span>
-      <span>Halal Mersin tantuni in the middle of Norwich</span>
+      <span>Halal Mersin tantuni in the middle of Norwich. Cooked to order on the sac.</span>
     </div>
     <div class="col">
+      <p class="heading">Visit</p>
       <span>1 Exeter Street, Norwich NR2 4QB</span>
-      <span>Sun to Thu 10am to 10pm, Fri and Sat 10am to 11pm</span>
+      <span>Sun to Thu 10am to 10pm</span>
+      <span>Fri and Sat 10am to 11pm</span>
+      <span>Prices include VAT.</span>
     </div>
-    <nav class="links" aria-label="Footer">
+    <nav class="links" aria-labelledby="footer-guides">
+      <p class="heading" id="footer-guides">Guides</p>
+      <ul>
+        <li><a href="/what-is-tantuni">What is tantuni?</a></li>
+        <li><a href="/halal-food-norwich">Halal food in Norwich</a></li>
+        <li><a href="/gozleme">Gözleme</a></li>
+        <li><a href="/turkish-drinks">Turkish drinks</a></li>
+        <li><a href="/about">Our story</a></li>
+      </ul>
+    </nav>
+    <nav class="links" aria-labelledby="footer-info">
+      <p class="heading" id="footer-info">Info</p>
       <ul>
         <li><a href="/menu">Menu and ordering</a></li>
         <li><a href="/menu#allergens">Allergens</a></li>
@@ -65,11 +92,14 @@
         <li><a href="/#visit">Find us</a></li>
         <li><a href="/privacy">Privacy and cookies</a></li>
         <li><button type="button" class="footer-btn" data-cookie-settings>Cookie settings</button></li>
+        <li><a href="/tr" hreflang="tr" lang="tr">Türkçe</a></li>
       </ul>
     </nav>
   </div>
+  <div class="wrap base"><span>© Mersinli Tantuni by Choban, Norwich</span><span>100% halal meat, cooked fresh to order</span></div>
 </footer>
+<!-- /@partial -->
 
-<script src="/assets/site.js?v=3" defer></script>
+<script src="/assets/site.js?v=4" defer></script>
 </body>
 </html>

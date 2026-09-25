@@ -4,8 +4,19 @@ Mersin style tantuni in Norwich, UK. All our meat is halal.
 
 Address: 1 Exeter Street, Norwich NR2 4QB
 Open: Sunday to Thursday 10am to 10pm, Friday and Saturday 10am to 11pm
-Menu: halal chicken, or mixed beef and lamb tantuni, both £6.50. Vegetarian gözleme with feta cheese, cheese and parsley, £4.50. Drinks £1.50 (şalgam, ayran, Fanta Orange, Fanta Lemon, Hayat water).
+Menu: halal chicken, or mixed beef and lamb tantuni, both £6.50, as a dürüm wrap or a plate. Vegetarian gözleme with feta cheese, cheese and parsley, £4.50. Drinks £1.50 (şalgam, ayran, Fanta Orange, Fanta Lemon, Hayat water).
+Payment: cash when you collect. Online card payment is coming soon.
 Order: https://mersinlitantuni.co.uk/menu
 Allergens: https://mersinlitantuni.co.uk/menu#allergens (tantuni and gözleme contain wheat, gözleme and ayran contain milk, şalgam contains wheat)
 
 Tantuni is a street food from Mersin, Turkey. Finely chopped meat is simmered, fried on a sac pan with chilli flakes and rolled in thin lavash with tomato, sumac onions and parsley.
+
+## Guides
+- What is tantuni?: https://mersinlitantuni.co.uk/what-is-tantuni
+- Halal food in Norwich: https://mersinlitantuni.co.uk/halal-food-norwich
+- Gözleme: https://mersinlitantuni.co.uk/gozleme
+- Şalgam and ayran (Turkish drinks): https://mersinlitantuni.co.uk/turkish-drinks
+- Our story: https://mersinlitantuni.co.uk/about
+
+## Türkçe
+The whole site is also in Turkish: https://mersinlitantuni.co.uk/tr (menu: https://mersinlitantuni.co.uk/tr/menu, guide: https://mersinlitantuni.co.uk/tr/tantuni-nedir)
